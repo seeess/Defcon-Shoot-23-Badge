@@ -128,15 +128,15 @@ When the tilt option is set, all digits are displayed the same for external rela
 The threshold, and setdig settings have no effect in this mode. 
 ####  6. “ Clap “ = Clapper mode
 Since I apparently don’t understand what feature creep means, I implemented a clapper mode. This is especially useful with an external relay to control lights or whatever else you want. 
-The decimal point pin can be hooked to an external relay. Due to current sinking on the cathode size of the display, the decimal points are lit the opposite of what you might expect.[See the external relay control section for more information](https://forum.defcon.org/forum/defcon/dc23-official-unofficial-parties-social-gatherings-events-contests/dc23-official-and-unofficial-events/unofficial-defcon-shoot/15239-defcon-23-shoot-electronic-badge)
+The decimal point pin can be hooked to an external relay. Due to current sinking on the cathode size of the display, the decimal points are lit the opposite of what you might expect. [See the external relay control section for more information](https://forum.defcon.org/forum/defcon/dc23-official-unofficial-parties-social-gatherings-events-contests/dc23-official-and-unofficial-events/unofficial-defcon-shoot/15239-defcon-23-shoot-electronic-badge)
 
-By default it takes two claps to change the state, to adjust this by press start to enter a claps configuration mode. This claps configuration mode will automatically time out and store the value currently displayed (1-F). 
+By default it takes two claps to change the state, to adjust this by press start to enter a claps configuration mode. The number of claps can be increased by pressing start or decreased by pressing select (1-F). This claps configuration mode will automatically time out and store the value currently displayed. 
 
 The speed, and setdig settings have no effect in this mode. 
 ####  7. “MorSE” = Morse code mode
 When entering this mode you are prompted to select the built in string to display (“Str ##”). Pressing select increments this value, pressing start selects the displayed string number. There are 23 built in strings listed below (numbers 0-22).
 
-  Selecting “ Cust ” is for custom string entry. You will see “PXX.CYY” displayed. The “XX” numbers  refer to the current character position in the string (50 characters max, 0-49), and “YY” refers to the current character you wish to set (digits 0-35 referring to a-z and 0-9, so 0=a, 25=z, 26=0, 35=9). The select button will scroll through available characters to insert into the string (YY above), the start button will add the current character indicated by “YY” to the string. When you are done entering characters select “ done “ which is shown after the 35th character.
+Selecting “ Cust ” is for custom string entry. You will see “PXX.CYY” displayed. The “XX” numbers  refer to the current character position in the string (50 characters max, 0-49), and “YY” refers to the current character you wish to set (digits 0-35 referring to a-z and 0-9, so 0=a, 25=z, 26=0, 35=9). The select button will scroll through available characters to insert into the string (YY above), the start button will add the current character indicated by “YY” to the string. When you are done entering characters select “ done “ which is shown after the 35th character.
 
 The string pattern will now blink out in morse code. 
 You can adjust the speed setting to increase or decrease the blink speed.
