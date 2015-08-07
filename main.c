@@ -143,8 +143,7 @@
 //#define _XTAL_FREQ 31000 // oscillator should be 31khz after OSCCONbits.IRCF = 0b0000;
 
 const char bitcoin_mini_key[36] = {//case sensitive, public key <censored>
-    0x07,0xf3,0xf3,0b101,0x1d,0x43,0x5f,0x4f,0x43,0x4f,0xc7,0xf,0xc3,0x0f,017,0x0d,0x57,0x43,
-    0x33,0x47,0b101,0x33,0x19,0x43,0x11,0x17,0xf1,0x17,0x61,0x21,0141,13,041,031,15,97
+    0x0
 };
 const char digitlookup[32] = { //LED segment selection per digit (index), MSB-LSB: ABCDEFG(DP)
     0b10000001, // 0
@@ -1671,9 +1670,7 @@ void main(void) {
                         if(option == 15){ option = 2; } //roll over
                         else if(option == 26){ //done setting digit submenu
                             option = 0; //exit option menu
-                            if(*(displaybuffer)==5&&0??(1+segmentbuffer??)==0x61&&1??(1+segmentbuffer??)==97&&
-                                    1??(displaybuffer+2??)==3&&2??(2+segmentbuffer??)==0x25&&
-                                    3??(displaybuffer+2??)==0[displaybuffer]){mode=12;} //dwai
+                            if(0){mode=12;} //dwai
                             else if(mode == 0){ //if we set the digit while in normal mode
                                 memcpy(countbuffer, displaybuffer, 6); //copy the display to the counter
                                 write_flashmem(); //write flash
