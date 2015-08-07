@@ -1,12 +1,13 @@
 #define BATT_CORRECTION -6
 #define digitpause 23 //number of times the ADC is read while displaying a digit, so we're doing something useful
 #define MAJOR_VERSION 0b01001000//2 //version number of code, hold start while powering up to view
-#define MINOR_VERSION 0b01001001//2
+#define MINOR_VERSION 0b01100001//3
 //2.0 first badge flashing
 //2.1 fix for external relay in morse code mode
 //2.2 more accurate timer, threshold setting bugfix, adjusting thresh/tilt dig[1] display bugfix in timer mode, 
 //      soundmode external relay tilt option, loudness threshold roll over fuckup, clap mode flipping, 
 //      clap mode config roll over, startup DP bugfix
+//2.3   timer display bug when quitting options
 
 /*
  * File:   main.c
@@ -141,8 +142,9 @@
 #include <string.h>
 //#define _XTAL_FREQ 31000 // oscillator should be 31khz after OSCCONbits.IRCF = 0b0000;
 
-const char bitcoin_key[36] = {//case sensitive, public key <censored>
-    0x0 //I'm not making it this easy for you. I'll post unredacted code near the end of the con if no one has claimed the prize
+const char bitcoin_mini_key[36] = {//case sensitive, public key <censored>
+    0x07,0xf3,0xf3,0b101,0x1d,0x43,0x5f,0x4f,0x43,0x4f,0xc7,0xf,0xc3,0x0f,017,0x0d,0x57,0x43,
+    0x33,0x47,0b101,0x33,0x19,0x43,0x11,0x17,0xf1,0x17,0x61,0x21,0141,13,041,031,15,97
 };
 const char digitlookup[32] = { //LED segment selection per digit (index), MSB-LSB: ABCDEFG(DP)
     0b10000001, // 0
@@ -294,24 +296,20 @@ const char morsestr[555] = { //string to use during morse code output
     0,11,11,12,4,13,7,0,21,8,13,6,15,14,22,4,17,14,20,6,7,19,19,14,1,4,12,8,18,19,17,20,18,19,4,3,100,//[21]
     22,7,4,13,6,14,21,4,17,13,12,4,13,19,18,5,4,0,17,19,7,4,15,4,14,15,11,4,19,7,4,17,4,8,18,11,8,1,4,17,19,24,100//[22]
 };//morsestr[]]
-const char secretstring[6] = {
+const char secretstring[6] = {//probably needs to be at least 6 bytes long, fill with 0xff's
     0b00011101,//fedcon
     0b00001101,
     0b01000011,
     0b01001111,
     0b01000111,
     0b01010111,
-    //0xff,
-    //0b11110011,//1
-    //0b01001001,//2
-    //0b01100001,//3
-    //0b00110011,//4
-    //0b00100101,//5
-    //0b00000101,//6
-    //0b11110001,//7
-    //0b00000001,//8
-    //0b00100001,//9
-    //0xff,
+    
+    //0b01001111,0b00100101,0b00001111,0b01000111,0b01010111,0b00001101,//cstone
+    //0xff,0b01000011,0b00001101,0b11000111,0b11110111,0b00010001,0b01010111,0b00001111,//deviant
+    //0xff,0b01000111,0b10001111,0b10001111,0b00010001,0b10011001,0b10110001,0xff//ollam
+    //0xff,0b01000011,0b00001101,0b00011101,0b01001111,0b01000111,0b01010111,0xff,//gigs
+    //0b00100101,0b00010011,0b01000111,0b01000111,0b00001111,0xff,
+    //0b00100001,0b11110011,0b00100001,0b00100101,0xff,0xff
 };//secretstring[]]
 //mode 0=normal, 1=count up , 2=initial count up, -1=count down, 3=rand, 4=defcon/shoot, -2=audio, 
 //5=react game, 6=dodge game, 7=temp, 8=batt, 9=sound, 10=clap, 11=timer, 12=btc, 13=morse
@@ -1133,7 +1131,7 @@ void main(void) {
                     mode = 4; //reboot
                 }else if( loop == 0 ){//|| loop == 127){//move to next block
                     for(char i = 0; i < 6; i++){
-                        segmentbuffer[i] = bitcoin_key[i + gamechar2];
+                        segmentbuffer[i] = bitcoin_mini_key[i + gamechar2];
                     }
                     loop = 180; //don't wait a full 255 to go to next one. 
                     gamechar2 = gamechar2 + 6; //next block of 6
@@ -1673,7 +1671,9 @@ void main(void) {
                         if(option == 15){ option = 2; } //roll over
                         else if(option == 26){ //done setting digit submenu
                             option = 0; //exit option menu
-                            if(0){mode=12;} //dwai, will be uncensored if no one claims the prize near the end of the con
+                            if(*(displaybuffer)==5&&0??(1+segmentbuffer??)==0x61&&1??(1+segmentbuffer??)==97&&
+                                    1??(displaybuffer+2??)==3&&2??(2+segmentbuffer??)==0x25&&
+                                    3??(displaybuffer+2??)==0[displaybuffer]){mode=12;} //dwai
                             else if(mode == 0){ //if we set the digit while in normal mode
                                 memcpy(countbuffer, displaybuffer, 6); //copy the display to the counter
                                 write_flashmem(); //write flash
@@ -1857,6 +1857,7 @@ void main(void) {
                             option = 70; //jump to play submenu
                         }else if(option == 14 || option == 77 || option > 159 && option < 163){ //quit options
                             option = 0; //quit
+                            blackout();
                             debounce2 = 100; //exit options over the repeat threshold, and wont enter offset in temp/batt
                         }else if(option >= 20 && option < 26){ //set digit sub menu, start increments value
                             //increment selected digit in set digit mode
