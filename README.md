@@ -1,5 +1,7 @@
 # Defcon 23 Shoot Badge
 ![badge image](http://i.imgur.com/w0be2bUl.jpg "green display = volunteer, yellow = normal, red = black badge")
+
+[Here's a feature overview in video form](https://www.youtube.com/watch?v=awRr_h3DX8c), you probably want to watch this at 1.5x speed
 ****
 I didn’t get any major sponsors, but Gigs who runs ballistictools.com did step up to help keep the cost down.
 
